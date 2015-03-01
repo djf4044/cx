@@ -1,7 +1,7 @@
 ﻿#pragma strict
 
 var terrain : Terrain;
-
+var imageTA : TextAsset;
 
 private var terrainDat : TerrainData;
 private var xNumSamps : int;
@@ -12,6 +12,11 @@ private var heights : float[,];
 private var tSize : Vector3;
 
 function Start () {
+
+	//load heightmap
+	var tex = new Texture2D(512,512);
+	tex.LoadImage(imageTA.bytes);
+	
 
 	terrainDat = terrain.terrainData;
 	xNumSamps = terrainDat.heightmapWidth;
@@ -37,11 +42,23 @@ function Start () {
 	var zLow : int = Mathf.Floor(zAct);
 	var zHigh : int = Mathf.Ceil(zAct);
 
+	for(var x = 0; x < 512; x++){
+		for(var z = 0; z < 512; z++){
+			//for some reason saving the png in GIMP then reading it
+			//here will swap the values
+			heights[z,x] = tex.GetPixel(x, z).grayscale;
+		}
+	}
+	
+	
 	for(var i = 0; i < xNumSamps; i++){
 		Debug.Log("i=" + i + ", h=" + heights[i,136]);
-		heights[i,136]=0;
+		for(var ii = 300; ii < 330; ii++){
+			heights[i,ii]=0;
+		}
 	}
-		terrainDat.SetHeights(0,0,heights);
+		
+	terrainDat.SetHeights(0,0,heights);
 			
 	var xhLow = heights[xLow,zLow]; //0,0
 	var xhHigh = heights[xHigh,zLow]; //1,0
