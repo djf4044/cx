@@ -5,12 +5,14 @@ var stParent : GameObject; //position the parent to position the track
 var lbParent : GameObject;
 var rbParent : GameObject;
 var guiControllerScript : GameObject;
+var terrainControllerScript : GameObject;
 
 //prefab refs
 private var stTrack : GameObject;
 private var lbTrack : GameObject;
 private var rbTrack : GameObject;
 private var guiController : guiScript;
+private var terrainController : terrainScript;
 
 private final var pieceIdx : int = 0;
 private final var frontIdx : int = 1;
@@ -46,6 +48,7 @@ private var pieceQueue : Queue;
 function Start () {
 //	Debug.Log("Starting");
 	guiController = guiControllerScript.GetComponent(guiScript) as guiScript;
+	terrainController = terrainControllerScript.GetComponent(terrainScript) as terrainScript;
 
 	ptQueue = new Queue();
 	pieceQueue = new Queue();
@@ -205,6 +208,8 @@ function genTrack(trackType : int, lastTrack : GameObject, playAnim : boolean) :
 	
 	genCamPath(newTrack);
 	
+	adjustTerrain(newTrack);
+	
 	return newTrack;
 }
 
@@ -250,6 +255,13 @@ function genCamPath(obj : GameObject) {
 	ptQueue.Enqueue(a2);
 	ptQueue.Enqueue(pt3);
 
+}
+
+//set terrain values around the given object (to zero)
+function adjustTerrain(obj : GameObject){
+	var x = obj.transform.position.x;
+	var z = obj.transform.position.z;
+	terrainController.zeroHeight(x - 10, x + 10, z - 20, z + 20);
 }
 
 //Calculate the vector midway between b and c, using a and d as exterior points (before
