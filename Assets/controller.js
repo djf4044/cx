@@ -11,6 +11,8 @@ var terrainControllerScript : GameObject;
 private var stTrack : GameObject;
 private var lbTrack : GameObject;
 private var rbTrack : GameObject;
+
+//controllers for other scripts
 private var guiController : guiScript;
 private var terrainController : terrainScript;
 
@@ -59,29 +61,14 @@ function Start () {
 
 	stTrackLen = Mathf.Abs(stTrack.renderer.bounds.max.z - stTrack.renderer.bounds.min.z);
 
-//	var obj : GameObject = genLeftBendTrack(stParent.transform.position, false);
-
+	//start with three straight pieces
 	pieceQueue.Enqueue(straight);
 	pieceQueue.Enqueue(straight);
 	pieceQueue.Enqueue(straight);
-
 
 	var obj : GameObject = genTrack(straight, stParent, false);
-/*
-	obj = genTrack(right, obj, false);
-
-	obj = genTrack(right, obj, false);
-
-	obj = genTrack(right, obj, false);
-
-	obj = genTrack(right, obj, false);
-
-*/	
 	lastPiece = obj;
 
-//	for(var i = 0; i < 6; i++){
-//		obj = genTrack(straight, obj, false);
-//	}
 
 	//camera's first target is the start of the first track
 	lastEndPt = ptQueue.Dequeue();	
@@ -99,6 +86,7 @@ function Start () {
 
 }
 
+//generates tracks for each piece on the piece queue
 function updateTrack(){
 
 	while(pieceQueue.Count > 0){
@@ -109,8 +97,10 @@ function updateTrack(){
 
 }
 
+//move the camera to follow the track
+//this path is defined by the points in the point queue (ptQueue)
 function updateCamera(){
-//	var deltaTime = Time.time - lastTime;
+
 	var deltaTime = Time.time - lastStartTime;
 	var distMoved = deltaTime * camSpeed;
 	var vecLen = Vector3.Distance(lastStartPt.position, lastEndPt.position);
@@ -140,29 +130,23 @@ function updateCamera(){
 	ohLight.transform.position = Camera.main.transform.position;
 	ohLight.transform.position.y += 5;
 	ohLight.transform.position.z += 10;
-
-	
-//	var distToLast = Vector3.Distance(Camera.main.transform.position, lastPiece.transform.position);
-	//Debug.Log("Dist to last: " + distToLast);
-	//Debug.Log("stLen: " + stTrackLen);
-//	if(distToLast < stTrackLen * 3){
-//		lastPiece = genTrack(2, lastPiece, true);
-//	}
 	
 	lastTime = Time.time;
 }
 
+//main update function
 function Update () {
 	
 	if(!isCrashed){
-		updateTrack();
-		
+		updateTrack();	
 		updateCamera();
 	}
 
 }
 
-
+//create a new track piece and animate it (if playAnim = true)
+//This will automatically place the start of the new track at the end of lastTrack
+//This will also add on a path for the camera to travel over this piece
 function genTrack(trackType : int, lastTrack : GameObject, playAnim : boolean) : GameObject{
 	var newTrack : GameObject;
 	switch(trackType){

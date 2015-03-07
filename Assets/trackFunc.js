@@ -7,15 +7,13 @@ function Start () {
 	startTime = Time.time;
 }
 
+//Main update function for each track piece,
+//Cleans up the track after lifetime expires
 function Update () {
-
-	//var dist = Vector3.Distance(transform.position, Camera.main.transform.position);
-	//Debug.Log("Dist: " + dist);
-	//if( dist < 2 ){
 
 	var nowTime = Time.time;
 	if(nowTime - startTime > lifeTime){
 		Destroy(transform.gameObject);
 	}
-	//}
+	
 }

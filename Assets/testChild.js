@@ -2,6 +2,7 @@
 
 var track : GameObject;
 
+//test script functions, can delete
 function Start () {
 
 	var plane = track.transform.GetChild(2);
