@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\controller.js" />
      <Compile Include="Assets\guiScript.js" />
+     <Compile Include="Assets\resourceScript.js" />
      <Compile Include="Assets\terrainScript.js" />
      <Compile Include="Assets\testChild.js" />
      <Compile Include="Assets\trackFunc.js" />

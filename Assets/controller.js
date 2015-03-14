@@ -128,7 +128,7 @@ function updateCamera(){
 	//Debug.Log(Camera.main.transform.rotation);
 						
 	ohLight.transform.position = Camera.main.transform.position;
-	ohLight.transform.position.y += 5;
+	ohLight.transform.position.y += 65;
 	ohLight.transform.position.z += 10;
 	
 	lastTime = Time.time;
@@ -296,8 +296,16 @@ function queueRight(){
 } 
 
 function crash(){
+	if(!isCrashed)	guiController.crash();
 	isCrashed = true;
-	guiController.crash();
+}
+
+function setRemainingCoal(amt : float){
+    if(amt < 0){
+		if(!isCrashed) guiController.outOfCoal();
+		isCrashed = true;
+	}
+	guiController.setRemainingCoal(amt);
 }
 
 
